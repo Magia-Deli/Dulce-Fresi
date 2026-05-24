@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+<title>Dulce Fresi</title>
+<meta name="theme-color" content="#e8006e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dulce Fresi">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23e91e8c'/><text y='.9em' font-size='72' x='12'>🍰</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#e8006e;--pl:#ff3da0;--pp:#fff0f8;--pm:#ffc0e0;--dk:#1a1a2e;--mu:#888;--gr:#25d366;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Poppins',sans-serif;background:#fafafa;color:#333;}
+.page{display:none;min-height:100vh;flex-direction:column;}
+.page.on{display:flex;}
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bounceIn{0%{transform:scale(.85);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes floatEmoji{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
+@keyframes pulse2{0%,100%{box-shadow:0 6px 24px rgba(232,0,110,.42)}50%{box-shadow:0 6px 36px rgba(232,0,110,.7)}}
+@keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(2.8);opacity:0}}
+
+/* Página entra con fade */
+.page.on{animation:fadeIn .32s ease both;}
+
+/* Header desliza hacia abajo */
+.hdr{animation:slideDown .36s ease both;}
+
+/* Hero con emoji flotante */
+.hero h1{animation:bounceIn .55s .1s ease both;}
+.hero h1 span,.hero h1:first-child{display:inline-block;}
+
+/* Tarjetas de productos animadas */
+.pcard{animation:fadeUp .45s ease both;transition:transform .18s,box-shadow .18s;}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(232,0,110,.15);}
+.pcard:nth-child(1){animation-delay:.05s}
+.pcard:nth-child(2){animation-delay:.12s}
+.pcard:nth-child(3){animation-delay:.19s}
+.pcard:nth-child(4){animation-delay:.26s}
+.pcard:nth-child(5){animation-delay:.33s}
+.pcard:nth-child(n+6){animation-delay:.38s}
+
+/* Botón "+" con bounceIn y ripple al click */
+.abtn{transition:transform .14s,box-shadow .14s;position:relative;overflow:hidden;}
+.abtn:active{transform:scale(.88);}
+.abtn::after{content:'';position:absolute;inset:0;border-radius:50%;background:rgba(255,255,255,.45);transform:scale(0);opacity:.5;}
+.abtn:active::after{animation:ripple .38s ease-out forwards;}
+
+/* Barra del carrito pulsa */
+.cbar{animation:pulse2 2.4s infinite;}
+
+/* Botones principales con hover suave */
+.pbtn,.gbtn,.sndbtn,.savbtn{transition:filter .17s,transform .14s;}
+.pbtn:hover,.gbtn:hover,.sndbtn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.pbtn:active,.gbtn:active,.sndbtn:active{transform:scale(.97);}
+
+/* Loading emoji flota */
+.loading-icon{animation:floatEmoji 1.4s ease-in-out infinite !important;}
+
+/* Badge del carrito */
+.badge{animation:bounceIn .3s ease both;}
+
+/* Filas admin animan */
+.arow{animation:fadeUp .38s ease both;transition:box-shadow .18s;}
+.arow:nth-child(odd){animation-delay:.04s}
+.arow:nth-child(even){animation-delay:.1s}
+.hdr{background:var(--p);height:60px;padding:0 1.1rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 4px 18px rgba(232,0,110,.45);flex-shrink:0;}
+.hdr-l{display:flex;align-items:center;gap:.5rem;font-size:1.08rem;font-weight:700;color:#fff;}
+.hdr-r{display:flex;gap:.4rem;align-items:center;}
+.hbtn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;position:relative;color:#fff;transition:background .17s,transform .14s;}
+.hbtn:hover{background:rgba(255,255,255,.35);}
+.hbtn:active{transform:scale(.9);}
+.hero{background:linear-gradient(160deg,var(--p) 0%,#ff1493 55%,var(--pl) 100%);padding:2rem 1.4rem 3rem;text-align:center;position:relative;overflow:hidden;flex-shrink:0;}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 80%);background-size:400px 100%;animation:shimmer 2.8s linear infinite;}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:38px;background:#fafafa;clip-path:ellipse(55% 100% at 50% 100%);}
+.hero h1{font-size:1.7rem;font-weight:700;color:#fff;}
+.sh{padding:1.3rem 1.2rem .6rem;flex-shrink:0;}
+.sh-t{font-size:1rem;font-weight:700;color:var(--dk);}
+.sh-b{width:30px;height:3px;background:var(--p);border-radius:2px;margin-top:.4rem;}
+.plist{padding:0 1rem;display:flex;flex-direction:column;gap:1rem;flex:1;}
+.pcard{background:#fff;border-radius:18px;box-shadow:0 2px 12px rgba(232,0,110,.1);overflow:hidden;}
+.pimg{width:100%;height:210px;object-fit:cover;display:block;}
+.pph{width:100%;height:210px;background:linear-gradient(135deg,var(--pm),var(--pp));display:flex;align-items:center;justify-content:center;font-size:4rem;}
+.pbody{padding:.9rem 1rem 1.1rem;}
+.pname{font-size:1.02rem;font-weight:700;color:var(--dk);margin-bottom:.55rem;}
+.bnew{display:inline-block;background:var(--p);color:#fff;font-size:.6rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:.14rem .58rem;border-radius:50px;margin-bottom:.38rem;}
+.srow{display:flex;align-items:center;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid #f0f0f0;}
+.srow:last-child{border-bottom:none;}
+.slbl{font-size:.85rem;font-weight:500;}
+.sprc{color:var(--p);font-weight:600;}
+.singlerow{display:flex;align-items:center;justify-content:space-between;}
+.singleprice{font-size:1.22rem;font-weight:700;color:var(--p);}
+.abtn{width:33px;height:33px;border-radius:50%;background:var(--p);border:none;color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(232,0,110,.4);flex-shrink:0;}
+.cbar{position:fixed;bottom:1rem;left:1rem;right:1rem;background:linear-gradient(90deg,var(--p),#ff1493);color:#fff;border-radius:14px;padding:.85rem 1.2rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;box-shadow:0 6px 24px rgba(232,0,110,.48);z-index:40;}
+footer{background:var(--p);color:rgba(255,255,255,.7);text-align:center;padding:1.2rem;font-size:.77rem;margin-top:1rem;flex-shrink:0;}
+.citems{padding:1rem;flex:1;display:flex;flex-direction:column;gap:.8rem;}
+.ccard{background:#fff;border-radius:17px;padding:.95rem 1rem;box-shadow:0 2px 12px rgba(233,30,140,.08);}
+.ci{display:flex;align-items:center;gap:.55rem;padding:.55rem 0;border-bottom:1px solid #f5f5f5;}
+.ci:last-child{border-bottom:none;}
+.cithumb{width:43px;height:43px;border-radius:9px;object-fit:cover;flex-shrink:0;}
+.cithumbph{width:43px;height:43px;border-radius:9px;background:var(--pp);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.ciinfo{flex:1;min-width:0;}
+.ciname{font-size:.85rem;font-weight:600;color:var(--dk);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cisize{font-size:.71rem;color:var(--mu);}
+.ciprice{font-size:.83rem;font-weight:700;color:var(--p);}
+.qw{display:flex;align-items:center;gap:.3rem;}
+.qbtn{width:25px;height:25px;border-radius:50%;border:none;cursor:pointer;font-weight:700;font-size:.82rem;}
+.qm{background:#f0f0f0;color:#333;} .qp{background:var(--p);color:#fff;}
+.qn{font-weight:700;min-width:15px;text-align:center;font-size:.86rem;}
+.delbtn{background:none;border:none;color:#ddd;cursor:pointer;font-size:.9rem;margin-left:.1rem;}
+.ctotal{display:flex;justify-content:space-between;align-items:center;padding-top:.7rem;margin-top:.1rem;}
+.ctlbl{font-weight:600;color:var(--dk);} .ctval{font-size:1.18rem;font-weight:700;color:var(--p);}
+.sndbtn{width:100%;background:var(--gr);color:#fff;border:none;padding:.95rem;border-radius:13px;font-family:'Poppins',sans-serif;font-size:.98rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;box-shadow:0 4px 16px rgba(37,211,102,.35);margin-bottom:.65rem;}
+.clrbtn{width:100%;background:#fce8e8;color:#c62828;border:none;padding:.6rem;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;}
+.emptyc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 1rem;color:var(--mu);}
+.fp{padding:1.3rem;max-width:440px;margin:0 auto;width:100%;}
+.fcard{background:#fff;border-radius:17px;padding:1.5rem;box-shadow:0 2px 12px rgba(233,30,140,.09);margin-bottom:1rem;}
+.ftitle{font-size:1.08rem;font-weight:700;color:var(--dk);margin-bottom:.2rem;}
+.fsub{font-size:.8rem;color:var(--mu);margin-bottom:1.2rem;}
+.fl{margin-bottom:.9rem;position:relative;}
+.eye-btn{position:absolute;right:.7rem;bottom:.72rem;background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--mu);padding:.15rem;line-height:1;user-select:none;}
+.fl input[type="password"],.fl input[type="text"]{padding-right:2.4rem;}
+.fl label{display:block;font-size:.72rem;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.28rem;}
+.fl input{width:100%;padding:.64rem .9rem;border:1.5px solid #eee;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.92rem;color:#333;background:#fafafa;}
+.fl input:focus{border-color:var(--p);outline:none;background:#fff;}
+.pbtn{width:100%;background:var(--p);color:#fff;border:none;padding:.73rem;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.91rem;font-weight:600;cursor:pointer;margin-top:.25rem;}
+.gbtn{width:100%;background:var(--gr);color:#fff;border:none;padding:.7rem;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.91rem;font-weight:600;cursor:pointer;margin-top:.25rem;}
+.emsg{background:#fce8e8;color:#c62828;border-radius:8px;padding:.48rem .82rem;font-size:.8rem;margin-bottom:.8rem;display:none;}
+.omsg{background:#e8f5e9;color:#2e7d32;border-radius:8px;padding:.48rem .82rem;font-size:.8rem;margin-bottom:.8rem;display:none;}
+.ibox{background:var(--pp);border:1px solid var(--pm);border-radius:10px;padding:.72rem .9rem;font-size:.78rem;color:var(--mu);margin-bottom:.9rem;line-height:1.65;}
+.ibox b{color:var(--p);}
+.tabbar{display:flex;background:#fff;border-bottom:2px solid var(--pm);flex-shrink:0;}
+.tab{flex:1;padding:.78rem .2rem;border:none;background:none;font-family:'Poppins',sans-serif;font-size:.77rem;font-weight:600;color:var(--mu);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab.on{color:var(--p);border-bottom-color:var(--p);}
+.alist{padding:1.1rem;display:flex;flex-direction:column;gap:.85rem;}
+.arow{background:#fff;border-radius:15px;box-shadow:0 2px 10px rgba(233,30,140,.08);overflow:hidden;}
+.atop{display:flex;align-items:center;gap:.75rem;padding:.85rem .95rem;cursor:pointer;}
+.athumb{width:46px;height:46px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--pp);display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
+.athumb img{width:46px;height:46px;object-fit:cover;}
+.ameta{flex:1;}
+.amname{font-size:.89rem;font-weight:700;color:var(--dk);}
+.amsub{font-size:.71rem;color:var(--mu);}
+.aarrow{color:var(--mu);font-size:.78rem;transition:transform .22s;}
+.abody{display:none;padding:0 .95rem .95rem;border-top:1px solid #f5f5f5;}
+.abody.on{display:block;}
+.flbl{font-size:.72rem;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;display:block;margin:.75rem 0 .28rem;}
+.ainp{width:100%;padding:.61rem .88rem;border:1.5px solid #eee;border-radius:9px;font-family:'Poppins',sans-serif;font-size:.9rem;outline:none;color:#333;background:#fafafa;}
+.ainp:focus{border-color:var(--p);}
+.parea{border:2px dashed var(--pm);border-radius:11px;padding:.6rem;text-align:center;cursor:pointer;background:var(--pp);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:.2rem 0 .35rem;overflow:hidden;position:relative;}
+.parea-empty{min-height:72px;}
+.parea-preview{padding:0;border-style:solid;border-color:var(--p);}
+.parea img.crop-thumb{width:100%;height:120px;object-fit:cover;object-position:center;border-radius:8px;display:block;}
+.togrow{display:flex;gap:.45rem;margin-bottom:.7rem;}
+.tog{flex:1;padding:.48rem;border:1.5px solid #eee;border-radius:8px;background:#fafafa;font-family:'Poppins',sans-serif;font-size:.79rem;font-weight:600;color:var(--mu);cursor:pointer;}
+.tog.on{background:var(--p);border-color:var(--p);color:#fff;}
+.sed{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.65rem;}
+.serow{display:flex;gap:.45rem;align-items:center;}
+.serow input{flex:1;padding:.48rem .65rem;border:1.5px solid #eee;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.83rem;outline:none;}
+.serow input:focus{border-color:var(--p);}
+.serm{background:#fce8e8;color:#c62828;border:none;width:26px;height:26px;border-radius:7px;cursor:pointer;flex-shrink:0;font-size:.88rem;}
+.addsz{background:var(--pp);color:var(--p);border:1.5px dashed var(--pm);padding:.4rem .9rem;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;width:100%;margin-bottom:.7rem;}
+.srow2{display:flex;gap:.45rem;margin-top:.85rem;}
+.savbtn{flex:1;background:#e8f5e9;color:#2e7d32;border:none;padding:.56rem;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.81rem;font-weight:600;cursor:pointer;}
+.delbtn2{background:#fce8e8;color:#c62828;border:none;padding:.56rem .9rem;border-radius:8px;font-family:'Poppins',sans-serif;font-size:.81rem;font-weight:600;cursor:pointer;}
+.newchk{display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--mu);margin:.65rem 0;cursor:pointer;}
+.newchk b{color:var(--p);}
+.rmphoto{background:#fce8e8;color:#c62828;border:none;padding:.26rem .7rem;border-radius:7px;font-size:.72rem;cursor:pointer;font-family:'Poppins',sans-serif;display:block;margin-top:.3rem;}
+/* ── CROP MODAL ── */
+.crop-modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:300;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1rem;}
+.crop-modal.off{display:none;}
+.crop-title{color:#fff;font-size:.95rem;font-weight:700;margin-bottom:.7rem;text-align:center;}
+.crop-subtitle{color:rgba(255,255,255,.6);font-size:.75rem;margin-bottom:.9rem;text-align:center;}
+.crop-wrap{position:relative;width:280px;height:280px;border-radius:16px;overflow:hidden;border:3px solid var(--p);cursor:grab;touch-action:none;flex-shrink:0;}
+.crop-wrap:active{cursor:grabbing;}
+.crop-img{position:absolute;transform-origin:top left;}
+.crop-overlay{position:absolute;inset:0;border:3px solid rgba(255,255,255,.5);border-radius:13px;pointer-events:none;}
+.crop-btns{display:flex;gap:.7rem;margin-top:1rem;width:280px;}
+.crop-confirm{flex:1;background:var(--p);color:#fff;border:none;padding:.75rem;border-radius:12px;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;}
+.crop-cancel{background:rgba(255,255,255,.15);color:#fff;border:none;padding:.75rem 1rem;border-radius:12px;font-family:'Poppins',sans-serif;font-size:.88rem;cursor:pointer;}
+.crop-zoom{display:flex;align-items:center;gap:.6rem;margin-top:.7rem;width:280px;}
+.crop-zoom-lbl{color:rgba(255,255,255,.6);font-size:.72rem;}
+.crop-zoom input{flex:1;accent-color:var(--p);}
+.flv-chips{display:flex;flex-wrap:wrap;gap:.42rem;margin:.35rem 0 .7rem;}
+.flv-chip{padding:.38rem .85rem;border-radius:50px;border:1.8px solid var(--pm);background:#fafafa;font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:600;color:var(--mu);cursor:pointer;transition:all .15s;}
+.flv-chip.on{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 2px 8px rgba(232,0,110,.32);}
+.flv-chip:active{transform:scale(.94);}
+/* Modal selector sabor */
+.flv-modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s ease;}
+.flv-modal.off{display:none;}
+.flv-sheet{background:#fff;border-radius:22px 22px 0 0;padding:1.4rem 1.2rem 2rem;width:100%;max-width:480px;animation:slideUp .25s ease;}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.flv-title{font-size:1rem;font-weight:700;color:var(--dk);margin-bottom:.3rem;}
+.flv-sub{font-size:.78rem;color:var(--mu);margin-bottom:1rem;}
+.flv-opts{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.2rem;}
+.flv-opt{padding:.5rem 1.1rem;border-radius:50px;border:2px solid var(--pm);background:var(--pp);font-family:'Poppins',sans-serif;font-size:.86rem;font-weight:600;color:var(--dk);cursor:pointer;transition:all .15s;}
+.flv-opt.on{background:var(--p);border-color:var(--p);color:#fff;box-shadow:0 2px 10px rgba(232,0,110,.35);}
+.flv-opt:active{transform:scale(.93);}
+.flv-confirm{width:100%;background:var(--p);color:#fff;border:none;padding:.85rem;border-radius:13px;font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(232,0,110,.38);}
+.flv-cancel{width:100%;background:none;color:var(--mu);border:none;padding:.6rem;font-family:'Poppins',sans-serif;font-size:.84rem;cursor:pointer;margin-top:.4rem;}
+.swrap{padding:1.1rem;display:flex;flex-direction:column;gap:.9rem;flex:1;overflow-y:auto;}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(18px);background:var(--dk);color:#fff;padding:.68rem 1.25rem;border-radius:50px;font-size:.82rem;font-weight:500;box-shadow:0 5px 20px rgba(0,0,0,.23);z-index:9999;opacity:0;transition:all .26s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.badge{position:absolute;top:-4px;right:-4px;background:#ff3d77;color:#fff;width:17px;height:17px;border-radius:50%;font-size:.59rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.loading{position:fixed;inset:0;background:linear-gradient(160deg,var(--p) 0%,#ff1493 60%,var(--pl) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;}
+.loading-icon{font-size:3.5rem;margin-bottom:1rem;}
+.loading-txt{color:#fff;font-weight:700;font-size:1rem;letter-spacing:.03em;}
+
+
+
+
+/* ── CERRADO OVERLAY ── */
+.closed-overlay{background:rgba(26,26,46,.92);border-radius:18px;margin:1rem;padding:2.2rem 1.4rem;text-align:center;backdrop-filter:blur(4px);animation:fadeUp .4s ease both;}
+.closed-emoji{font-size:3rem;margin-bottom:.7rem;display:block;}
+.closed-title{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.closed-msg{font-size:.83rem;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:1.1rem;}
+.closed-hours{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:.7rem 1rem;display:inline-flex;flex-direction:column;gap:.3rem;margin-bottom:0;}
+.closed-hours span{font-size:.78rem;color:rgba(255,255,255,.8);font-weight:500;}
+.closed-hours b{color:#ff9de2;}
+
+/* ── TOGGLE TIENDA (admin) ── */
+.store-toggle-card{background:#fff;border-radius:17px;padding:1.2rem;box-shadow:0 2px 12px rgba(233,30,140,.09);margin-bottom:1rem;}
+.store-toggle-title{font-size:1rem;font-weight:700;color:var(--dk);margin-bottom:.2rem;}
+.store-toggle-sub{font-size:.78rem;color:var(--mu);margin-bottom:1rem;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;background:var(--pp);border:1.5px solid var(--pm);border-radius:12px;padding:.8rem 1rem;}
+.toggle-label{font-size:.88rem;font-weight:600;color:var(--dk);}
+.toggle-label small{display:block;font-size:.72rem;font-weight:400;color:var(--mu);margin-top:.08rem;}
+.toggle-switch{position:relative;width:50px;height:27px;flex-shrink:0;}
+.toggle-switch input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:27px;cursor:pointer;transition:background .25s;}
+.toggle-slider:before{content:'';position:absolute;width:21px;height:21px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle-switch input:checked + .toggle-slider{background:var(--gr);}
+.toggle-switch input:checked + .toggle-slider:before{transform:translateX(23px);}
+.store-open-badge{display:inline-flex;align-items:center;gap:.35rem;background:#e8f5e9;color:#2e7d32;font-size:.76rem;font-weight:700;padding:.3rem .75rem;border-radius:50px;margin-top:.75rem;}
+.store-closed-badge{display:inline-flex;align-items:center;gap:.35rem;background:#fce8e8;color:#c62828;font-size:.76rem;font-weight:700;padding:.3rem .75rem;border-radius:50px;margin-top:.75rem;}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading" id="loading">
+  <div class="loading-icon">🍓</div>
+  <div class="loading-txt">Cargando Dulce Fresi…</div>
+</div>
+
+<!-- PUBLIC -->
+<div class="page" id="pg-public">
+  <div class="hdr">
+    <div class="hdr-l"><span>🍰</span> Dulce Fresi</div>
+    <div class="hdr-r">
+      <button class="hbtn" id="cartbtn" onclick="goCart()">🛒<span class="badge" id="cbadge" style="display:none">0</span></button>
+      <button class="hbtn" onclick="goLogin()">⚙️</button>
+    </div>
+  </div>
+  <div class="hero"><h1>🍓 Bienvenido a Dulce Fresi</h1></div>
+
+
+  <div id="public-content">
+    <div class="sh"><div class="sh-t">Nuestros Postres</div><div class="sh-b"></div></div>
+    <div class="plist" id="plist" style="padding-bottom:5rem"></div>
+  </div>
+  <div class="cbar" id="cbar" style="display:none" onclick="goCart()">
+    <div style="display:flex;align-items:center;gap:.5rem"><span style="font-size:1.15rem">🛒</span><span id="cbcount" style="font-weight:600"></span></div>
+    <span id="cbtotal" style="font-weight:700;font-size:.98rem"></span>
+  </div>
+  <footer>Hecho con 🍓 por <b style="color:#fff">Dulce Fresi</b></footer>
+</div>
+
+<!-- CART -->
+<div class="page" id="pg-cart">
+  <div class="hdr">
+    <button class="hbtn" onclick="go('public')" style="margin-right:.5rem">←</button>
+    <span style="font-size:1rem;font-weight:700;color:#fff;flex:1">🛒 Mi Pedido</span>
+  </div>
+  <div id="cartbody" style="flex:1;display:flex;flex-direction:column;overflow-y:auto"></div>
+</div>
+
+<!-- LOGIN -->
+<div class="page" id="pg-login">
+  <div class="hdr">
+    <button class="hbtn" onclick="go('public')" style="margin-right:.5rem">←</button>
+    <span style="font-size:1rem;font-weight:700;color:#fff;flex:1">⚙️ Administrador</span>
+  </div>
+  <div class="fp">
+    <div class="fcard">
+      <div class="ftitle">Iniciar sesión</div>
+      <div class="fsub">Ingresa tus credenciales</div>
+      <div class="emsg" id="lerr">❌ Usuario o contraseña incorrectos</div>
+      <div class="fl"><label>Usuario</label><input id="iu" type="text" autocomplete="username" placeholder="Tu usuario"></div>
+      <div class="fl"><label>Contraseña</label><input id="ip" type="password" autocomplete="current-password" placeholder="Tu contraseña"><button type="button" class="eye-btn" onclick="toggleEye('ip',this)">👁️</button></div>
+      <button class="pbtn" onclick="doLogin()">Entrar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="page" id="pg-admin">
+  <div class="hdr" style="justify-content:space-between">
+    <span style="font-size:.98rem;font-weight:700;color:#fff">⚙️ Panel Admin</span>
+    <button onclick="go('public')" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.28);color:#fff;padding:.28rem .78rem;border-radius:50px;font-family:'Poppins',sans-serif;font-size:.76rem;cursor:pointer">Salir</button>
+  </div>
+  <div class="tabbar">
+    <button class="tab on" id="tab-c" onclick="stab('c')">🧁 Catálogo</button>
+    <button class="tab"    id="tab-a" onclick="stab('a')">➕ Agregar</button>
+    <button class="tab"    id="tab-s" onclick="stab('s')">⚙️ Config</button>
+  </div>
+
+  <div id="tc-c" style="flex:1;overflow-y:auto"><div class="alist" id="alist"></div></div>
+
+  <div id="tc-a" style="display:none;flex:1;overflow-y:auto">
+    <div style="padding:1.1rem">
+      <div style="font-size:.93rem;font-weight:700;color:var(--dk);margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:2px solid var(--pm)">➕ Nuevo postre</div>
+      <span class="flbl">Foto</span>
+      <div class="parea parea-empty" id="npa" onclick="document.getElementById('npi').click()">
+        <input type="file" id="npi" accept="image/*" style="display:none" onchange="onNewPhoto(this)">
+        <div id="npi-icon" style="font-size:1.8rem;margin-bottom:.2rem">📷</div>
+        <div id="npi-hint" style="font-size:.78rem;color:var(--mu)"><b style="color:var(--p)">Toca para subir foto</b><br>galería o cámara</div>
+        <img id="npi-prev" class="crop-thumb" style="display:none;border-radius:8px">
+      </div>
+      <button class="rmphoto" id="npi-rm" style="display:none" onclick="clearNewPhoto()">✕ Quitar foto</button>
+      <div class="fl" style="margin-top:.85rem"><label>Nombre *</label><input id="nn" type="text" placeholder="Ej. Fresas con Crema"></div>
+      <span class="flbl">¿Cómo se vende?</span>
+      <div class="togrow">
+        <button class="tog on" id="nts" onclick="setNPT('single')">💲 Precio único</button>
+        <button class="tog"    id="ntz" onclick="setNPT('sizes')">📏 Por tamaños</button>
+      </div>
+      <div id="nsec-single"><div class="fl"><label>Precio ($)</label><input id="np" type="number" placeholder="0.00" min="0" step="0.5"></div></div>
+      <div id="nsec-sizes" style="display:none">
+        <span class="flbl">Tamaños y precios</span>
+        <div class="sed" id="nsed"></div>
+        <button class="addsz" onclick="addSR('nsed')">+ Agregar tamaño</button>
+      </div>
+      <label class="newchk"><input type="checkbox" id="nb"> Marcar como <b>Nuevo</b></label>
+      <!-- SABORES -->
+      <div style="margin-bottom:.85rem">
+        <label class="newchk" style="margin-bottom:.5rem"><input type="checkbox" id="nfb" onchange="toggleFlavSec('nfsed',this.checked)"> Este producto tiene <b>sabores</b> para elegir</label>
+        <div id="nfsec" style="display:none">
+          <span class="flbl">Sabores disponibles</span>
+          <div class="sed" id="nfsed"></div>
+          <button class="addsz" onclick="addFlavRow('nfsed')">+ Agregar sabor</button>
+        </div>
+      </div>
+      <button class="pbtn" onclick="addProd()">✦ Agregar al catálogo</button>
+    </div>
+  </div>
+
+  <div id="tc-s" style="display:none;flex:1;overflow-y:auto">
+    <div class="swrap">
+
+      <!-- CONTROL TIENDA -->
+      <div class="store-toggle-card">
+        <div class="store-toggle-title">🏪 Estado de la tienda</div>
+        <div class="store-toggle-sub">Controla si los clientes pueden hacer pedidos</div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            Tienda abierta
+            <small>Los clientes pueden ver el menú y hacer pedidos</small>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="store-open-chk" onchange="toggleStore(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div id="store-badge"></div>
+      </div>
+      <div class="fcard">
+        <div class="ftitle">📱 WhatsApp para pedidos</div>
+        <div class="fsub">El número que recibe los pedidos</div>
+        <div class="ibox">Con código de país, sin espacios.<br><b>México:</b> 521 + 10 dígitos → <b>5215512345678</b></div>
+        <div class="fl"><label>Tu número de WhatsApp</label><input id="wai" type="tel" inputmode="numeric" placeholder="Ej. 5215512345678"></div>
+        <button class="gbtn" onclick="saveWa()">💬 Guardar número</button>
+      </div>
+      <div class="fcard">
+        <div class="ftitle">🔐 Cambiar acceso</div>
+        <div class="fsub">Usuario y contraseña del panel admin</div>
+        <div class="ibox">Puedes usar tu <b>número de teléfono</b> como usuario o contraseña.</div>
+        <div class="omsg" id="cok">✅ Credenciales actualizadas</div>
+        <div class="emsg" id="cerr"></div>
+        <div class="fl"><label>Contraseña actual *</label><input id="sc" type="password" autocomplete="current-password" placeholder="Tu contraseña actual"><button type="button" class="eye-btn" onclick="toggleEye('sc',this)">👁️</button></div>
+        <div class="fl"><label>Nuevo usuario</label><input id="su" type="text" autocomplete="username" placeholder="Ej. fresi o tu teléfono"></div>
+        <div class="fl"><label>Nueva contraseña</label><input id="sp" type="password" autocomplete="new-password" placeholder="Mínimo 4 caracteres"><button type="button" class="eye-btn" onclick="toggleEye('sp',this)">👁️</button></div>
+        <div class="fl"><label>Confirmar contraseña</label><input id="spc" type="password" autocomplete="new-password" placeholder="Repite la contraseña"><button type="button" class="eye-btn" onclick="toggleEye('spc',this)">👁️</button></div>
+        <button class="pbtn" onclick="saveCreds()">💾 Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CROP MODAL -->
+<div class="crop-modal off" id="crop-modal">
+  <div class="crop-title">✂️ Ajusta tu foto</div>
+  <div class="crop-subtitle">Arrastra para mover · Usa el zoom para acercar</div>
+  <div class="crop-wrap" id="crop-wrap">
+    <img id="crop-img" class="crop-img">
+    <div class="crop-overlay"></div>
+  </div>
+  <div class="crop-zoom">
+    <span class="crop-zoom-lbl">🔍 Zoom</span>
+    <input type="range" id="crop-zoom-range" min="1" max="3" step="0.01" value="1" oninput="cropZoom(this.value)">
+  </div>
+  <div class="crop-btns">
+    <button class="crop-cancel" onclick="cropCancel()">Cancelar</button>
+    <button class="crop-confirm" onclick="cropConfirm()">✓ Usar esta parte</button>
+  </div>
+</div>
+
+<!-- MODAL SABOR -->
+<div class="flv-modal off" id="flv-modal">
+  <div class="flv-sheet">
+    <div class="flv-title">🌶️ Elige el sabor</div>
+    <div class="flv-sub" id="flv-sub">Selecciona una opción</div>
+    <div class="flv-opts" id="flv-opts"></div>
+    <button class="flv-confirm" id="flv-confirm" onclick="flvConfirm()">✦ Agregar al carrito</button>
+    <button class="flv-cancel" onclick="flvClose()">Cancelar</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ══ FIREBASE CONFIG ══
+const firebaseConfig = {
+  apiKey: "AIzaSyD3GhMLyOZqDrrV4_kAy9IWy7627FCzOO0",
+  authDomain: "magia-fresi.firebaseapp.com",
+  databaseURL: "https://magia-fresi-default-rtdb.firebaseio.com",
+  projectId: "magia-fresi",
+  storageBucket: "magia-fresi.firebasestorage.app",
+  messagingSenderId: "526220468589",
+  appId: "1:526220468589:web:3ed7e4d232f6526b95fa64"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getDatabase(app);
+
+// ══ DB HELPERS ══
+const dbRef = (path) => ref(db, path);
+
+async function dbGet(path) {
+  const snap = await get(dbRef(path));
+  return snap.exists() ? snap.val() : null;
+}
+async function dbSet(path, val) {
+  await set(dbRef(path), val);
+}
+function dbListen(path, cb) {
+  onValue(dbRef(path), snap => cb(snap.exists() ? snap.val() : null));
+}
+
+// ══ STATE ══
+let products = [];
+let settings = { whatsapp:"", user:"admin", pass:"1234", isOpen:false };
+let nextId   = Date.now();
+let cart     = [];
+let cur      = "public";
+let npt      = "single";
+let npd      = "";
+
+// ══ INIT ══
+async function init() {
+  // Escuchar cambios en tiempo real — cualquier cambio se ve al instante
+  dbListen("products", val => {
+    products = val ? Object.values(val) : [];
+    if (cur === "public") renderProds();
+    if (cur === "admin")  renderAdminList();
+  });
+
+  dbListen("settings", val => {
+    if (val) {
+      settings = val;
+      const wai = document.getElementById("wai");
+      if (wai) wai.value = settings.whatsapp || "";
+    }
+    updateStoreUI();
+    if (cur === "public") renderProds();
+  });
+
+  // Ocultar loading
+  setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    go("public");
+  }, 1200);
+}
+
+// ══ PRODUCTS ══
+function renderProds() {
+  const el = document.getElementById("plist");
+  const content = document.getElementById("public-content");
+
+  // Tienda cerrada: mostrar overlay, ocultar menú normal
+  if (!settings.isOpen) {
+    content.innerHTML = `
+      <div class="closed-overlay">
+        <span class="closed-emoji">🔒</span>
+        <div class="closed-title">Cerrado por el momento</div>
+        <div class="closed-msg">Gracias por visitarnos 🍓<br>Te esperamos en nuestro horario de atención.</div>
+        <div class="closed-hours">
+          <span>📅 <b>Viernes, Sábado y Domingo</b></span>
+          <span>🕖 <b>7:00 PM – 11:00 PM</b></span>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Tienda abierta: restaurar estructura normal si fue reemplazada
+  if (!document.getElementById("plist")) {
+    content.innerHTML = `<div class="sh"><div class="sh-t">Nuestros Postres</div><div class="sh-b"></div></div><div class="plist" id="plist" style="padding-bottom:5rem"></div>`;
+  }
+  const list = document.getElementById("plist");
+  if (!products.length) {
+    list.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--mu)">No hay postres disponibles 🍰</div>`;
+    return;
+  }
+  list.innerHTML = products.map(p => `
+    <div class="pcard">
+      ${p.photo ? `<img class="pimg" src="${p.photo}" alt="${p.name}">` : `<div class="pph">🍰</div>`}
+      <div class="pbody">
+        ${p.isNew ? `<div class="bnew">Nuevo</div>` : ""}
+        <div class="pname">${p.name}</div>
+        ${p.priceType === "single"
+          ? `<div class="singlerow"><span class="singleprice">$${parseFloat(p.singlePrice).toFixed(2)}</span><button class="abtn" onclick="${(p.flavors&&p.flavors.length)?`flvOpen(${p.id},'','',${p.singlePrice})`:`addToCart(${p.id},'',${p.singlePrice})`}">+</button></div>`
+          : `<div>${(p.sizes||[]).map((s,i) => `<div class="srow" style="${i===p.sizes.length-1?"border:none":""}"><span class="slbl">${s.label} <span class="sprc">$${parseFloat(s.price).toFixed(2)}</span></span><button class="abtn" onclick="${(p.flavors&&p.flavors.length)?`flvOpen(${p.id},'${s.label}','',${s.price})`:`addToCart(${p.id},'${s.label}',${s.price})`}">+</button></div>`).join("")}</div>`}
+        ${(p.flavors&&p.flavors.length)?`<div style="margin-top:.55rem;font-size:.7rem;font-weight:600;color:var(--mu);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.3rem">Sabores</div><div class="flv-chips">${p.flavors.map(f=>`<span class="flv-chip">${f}</span>`).join("")}</div>`:""}
+      </div>
+    </div>`).join("");
+}
+
+// ══ CART ══
+window.addToCart = function(id, size, price, flavor) {
+  const prod = products.find(p => p.id === id); if (!prod) return;
+  flavor = flavor || "";
+  const key  = id + "_" + (size||"") + "_" + flavor;
+  const ex   = cart.find(i => i.key === key);
+  if (ex) ex.qty++;
+  else cart.push({key, name:prod.name, size, flavor, price, photo:prod.photo, qty:1});
+  updCartUI();
+  toast$("🛒 " + prod.name + (size ? " ("+size+")" : "") + (flavor ? " · "+flavor : "") + " agregado");
+};
+window.chqty = function(key, d) {
+  const i = cart.find(x => x.key === key); if (!i) return;
+  i.qty = Math.max(1, i.qty + d);
+  updCartUI();
+  if (cur === "cart") renderCart();
+};
+window.delci = function(key) {
+  cart = cart.filter(i => i.key !== key);
+  updCartUI();
+  if (cur === "cart") renderCart();
+};
+
+function cTotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+function cCount() { return cart.reduce((s,i) => s + i.qty, 0); }
+
+function updCartUI() {
+  const n = cCount(), t = cTotal();
+  const b = document.getElementById("cbadge"), bar = document.getElementById("cbar");
+  b.textContent = n; b.style.display = n ? "flex" : "none";
+  if (n) {
+    bar.style.display = "flex";
+    document.getElementById("cbcount").textContent = n + " " + (n===1?"producto":"productos");
+    document.getElementById("cbtotal").textContent = "$" + t.toFixed(2) + " →";
+  } else bar.style.display = "none";
+}
+
+function renderCart() {
+  const el = document.getElementById("cartbody");
+  if (!cart.length) {
+    el.innerHTML = `<div class="emptyc"><div style="font-size:3rem;margin-bottom:1rem">🛒</div><div>Tu carrito está vacío</div><button onclick="go('public')" style="background:var(--p);color:#fff;border:none;padding:.62rem 1.8rem;border-radius:10px;font-family:'Poppins',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;margin-top:1.1rem">Ver postres</button></div>`;
+    return;
+  }
+  const items = cart.map(i => `
+    <div class="ci">
+      ${i.photo ? `<img class="cithumb" src="${i.photo}">` : `<div class="cithumbph">🍰</div>`}
+      <div class="ciinfo">
+        <div class="ciname">${i.name}</div>
+        ${i.size ? `<div class="cisize">${i.size}</div>` : ""}
+        ${i.flavor ? `<div class="cisize">🌶️ ${i.flavor}</div>` : ""}
+        <div class="ciprice">$${(i.price*i.qty).toFixed(2)}</div>
+      </div>
+      <div class="qw">
+        <button class="qbtn qm" onclick="chqty('${i.key}',-1)">−</button>
+        <span class="qn">${i.qty}</span>
+        <button class="qbtn qp" onclick="chqty('${i.key}',1)">+</button>
+      </div>
+      <button class="delbtn" onclick="delci('${i.key}')">🗑</button>
+    </div>`).join("");
+  el.innerHTML = `
+    <div class="citems">
+      <div class="ccard">
+        ${items}
+        <div class="ctotal"><span class="ctlbl">Total</span><span class="ctval">$${cTotal().toFixed(2)}</span></div>
+      </div>
+      <button class="sndbtn" onclick="sendWA()"><span style="font-size:1.15rem">💬</span>Enviar pedido</button>
+      <button class="clrbtn" onclick="clrCart()">🗑 Vaciar carrito</button>
+    </div>`;
+}
+
+window.sendWA = function() {
+  const num = (settings.whatsapp||"").replace(/\D/g,"");
+  if (!num) { toast$("⚠️ Configura el número en ⚙️ Config"); return; }
+  const lines = cart.map(i => {
+    let det = i.name;
+    if (i.size) det += ` (${i.size})`;
+    if (i.flavor) det += ` · Sabor: ${i.flavor}`;
+    return `• ${det} x${i.qty} — $${(i.price*i.qty).toFixed(2)}`;
+  }).join("\n");
+  const msg = encodeURIComponent(`🍓 *Pedido Dulce Fresi*\n\n${lines}\n\n*Total: $${cTotal().toFixed(2)}*\n\n¡Hola! Me gustaría hacer este pedido 😊`);
+  window.open("https://wa.me/" + num + "?text=" + msg, "_blank");
+};
+window.clrCart = function() { cart=[]; updCartUI(); go("public"); };
+
+// ══ NAVIGATION ══
+window.go = function(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("on"));
+  document.getElementById("pg-"+page).classList.add("on");
+  window.scrollTo(0,0); cur = page;
+  if (page === "public") renderProds();
+  if (page === "cart")   renderCart();
+  if (page === "login")  document.getElementById("lerr").style.display="none";
+};
+window.goCart  = () => go("cart");
+window.goLogin = () => go("login");
+
+// ══ LOGIN ══
+window.doLogin = function() {
+  const u = document.getElementById("iu").value.trim();
+  const p = document.getElementById("ip").value;
+  if (u === settings.user && p === settings.pass) {
+    document.getElementById("lerr").style.display = "none";
+    document.getElementById("ip").value = "";
+    go("admin"); stab("c");
+  } else {
+    document.getElementById("lerr").style.display = "block";
+  }
+};
+document.getElementById("ip").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
+document.getElementById("iu").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
+
+// ══ ADMIN TABS ══
+window.stab = function(t) {
+  ["c","a","s"].forEach(x => {
+    document.getElementById("tab-"+x).classList.toggle("on", x===t);
+    document.getElementById("tc-"+x).style.display = x===t ? "block":"none";
+  });
+  if (t==="c") renderAdminList();
+  if (t==="a") resetAddForm();
+  if (t==="s") { document.getElementById("wai").value = settings.whatsapp||""; updateStoreUI(); }
+};
+
+// ══ ADMIN LIST ══
+function renderAdminList() {
+  const el = document.getElementById("alist");
+  if (!products.length) {
+    el.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--mu)">No hay postres. ¡Agrega el primero!</div>`;
+    return;
+  }
+  el.innerHTML = products.map(p => `
+    <div class="arow" id="ar${p.id}">
+      <div class="atop" onclick="togAdm(${p.id})">
+        <div class="athumb">${p.photo ? `<img src="${p.photo}">` : "🍰"}</div>
+        <div class="ameta">
+          <div class="amname">${p.name}</div>
+          <div class="amsub">${p.priceType==="single" ? "$"+parseFloat(p.singlePrice).toFixed(2) : (p.sizes||[]).length+" tamaño(s)"}${p.isNew ? " · <b style='color:var(--p)'>Nuevo</b>" : ""}</div>
+        </div>
+        <span class="aarrow" id="aa${p.id}">▼</span>
+      </div>
+      <div class="abody" id="ab${p.id}">
+        <span class="flbl">Nombre</span>
+        <input class="ainp" id="en${p.id}" value="${p.name}">
+
+        <span class="flbl">Foto</span>
+        <div class="parea ${p.photo ? 'parea-preview' : 'parea-empty'}" id="epa${p.id}" onclick="document.getElementById('epi${p.id}').click()">
+          <input type="file" id="epi${p.id}" accept="image/*" style="display:none" onchange="onEditPhoto(${p.id},this)">
+          ${p.photo ? `<img src="${p.photo}" class="crop-thumb">` : `<div style="font-size:1.6rem">📷</div><div style="font-size:.76rem;color:var(--mu)"><b style="color:var(--p)">Cambiar foto</b></div>`}
+        </div>
+        ${p.photo ? `<button class="rmphoto" onclick="clearEditPhoto(${p.id})">✕ Quitar foto</button>` : ""}
+
+        <span class="flbl">¿Cómo se vende?</span>
+        <div class="togrow">
+          <button class="tog ${p.priceType==="single"?"on":""}" id="ets${p.id}" onclick="setEPT(${p.id},'single')">💲 Precio único</button>
+          <button class="tog ${p.priceType==="sizes"?"on":""}"  id="etz${p.id}" onclick="setEPT(${p.id},'sizes')">📏 Por tamaños</button>
+        </div>
+        <div id="eps${p.id}" style="${p.priceType==="single"?"":"display:none"}">
+          <input class="ainp" style="font-weight:700;color:var(--p)" type="number" id="esp${p.id}" value="${p.singlePrice}" min="0" step="0.5">
+        </div>
+        <div id="epz${p.id}" style="${p.priceType==="sizes"?"":"display:none"}">
+          <div class="sed" id="esed${p.id}">
+            ${(p.sizes||[]).map(s => `<div class="serow"><input placeholder="Tamaño" value="${s.label}" style="max-width:115px"><input type="number" placeholder="Precio" value="${s.price}" min="0" step=".5"><button class="serm" onclick="this.parentElement.remove()">×</button></div>`).join("")}
+          </div>
+          <button class="addsz" onclick="addSR('esed${p.id}')">+ Agregar tamaño</button>
+        </div>
+
+        <label class="newchk"><input type="checkbox" id="ec${p.id}" ${p.isNew?"checked":""}> Marcar como <b>Nuevo</b></label>
+        <!-- SABORES EDICIÓN -->
+        <div style="margin-bottom:.85rem">
+          <label class="newchk" style="margin-bottom:.5rem"><input type="checkbox" id="efb${p.id}" onchange="toggleFlavSec('efsed${p.id}',this.checked)" ${(p.flavors&&p.flavors.length)?"checked":""}> Este producto tiene <b>sabores</b> para elegir</label>
+          <div id="efsec${p.id}" style="${(p.flavors&&p.flavors.length)?"":"display:none"}">
+            <span class="flbl">Sabores disponibles</span>
+            <div class="sed" id="efsed${p.id}">
+              ${(p.flavors||[]).map(f=>`<div class="serow"><input placeholder="Ej. Nachos" value="${f}" style="flex:1"><button class="serm" onclick="this.parentElement.remove()">×</button></div>`).join("")}
+            </div>
+            <button class="addsz" onclick="addFlavRow('efsed${p.id}')">+ Agregar sabor</button>
+          </div>
+        </div>
+        <div class="srow2">
+          <button class="savbtn" onclick="saveEdit(${p.id})">💾 Guardar</button>
+          <button class="delbtn2" onclick="delProd(${p.id})">🗑 Eliminar</button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+window.togAdm = function(id) {
+  const b = document.getElementById("ab"+id), a = document.getElementById("aa"+id);
+  const open = b.classList.toggle("on");
+  a.style.transform = open ? "rotate(180deg)" : "none";
+};
+window.setEPT = function(id, t) {
+  document.getElementById("ets"+id).classList.toggle("on", t==="single");
+  document.getElementById("etz"+id).classList.toggle("on", t==="sizes");
+  document.getElementById("eps"+id).style.display = t==="single" ? "" : "none";
+  document.getElementById("epz"+id).style.display = t==="sizes"  ? "" : "none";
+};
+window.onEditPhoto = function(id, inp) {
+  const file = inp.files[0]; if (!file) return;
+  resizeImg(file, data => {
+    const p = products.find(x => x.id===id); if(p) p._np = data;
+    const area = document.getElementById("epa"+id);
+    area.classList.remove("parea-empty"); area.classList.add("parea-preview");
+    area.innerHTML = `<input type="file" id="epi${id}" accept="image/*" style="display:none" onchange="onEditPhoto(${id},this)"><img src="${data}" class="crop-thumb">`;
+  });
+};
+window.clearEditPhoto = function(id) {
+  const p = products.find(x => x.id===id); if(p) p._np = "";
+  renderAdminList();
+};
+window.saveEdit = async function(id) {
+  const p = products.find(x => x.id===id);
+  const name = document.getElementById("en"+id).value.trim();
+  if (!name) { toast$("⚠️ El nombre no puede estar vacío"); return; }
+  const isNew = document.getElementById("ec"+id).checked;
+  const isSingle = document.getElementById("ets"+id).classList.contains("on");
+  let sp=0, sz=[];
+  if (isSingle) {
+    sp = parseFloat(document.getElementById("esp"+id).value);
+    if (isNaN(sp)||sp<0) { toast$("⚠️ Precio inválido"); return; }
+  } else {
+    sz = getSizes("esed"+id);
+    if (!sz) { toast$("⚠️ Agrega al menos un tamaño con precio"); return; }
+  }
+  p.name=name; p.isNew=isNew; p.priceType=isSingle?"single":"sizes"; p.singlePrice=sp; p.sizes=sz;
+  p.flavors = document.getElementById("efb"+id).checked ? getFlavors("efsed"+id) : [];
+  if (p._np !== undefined) { p.photo = p._np; delete p._np; }
+  await dbSet("products/"+id, p);
+  toast$("✅ Guardado");
+};
+window.delProd = async function(id) {
+  const p = products.find(x => x.id===id);
+  if (!confirm(`¿Eliminar "${p.name}"?`)) return;
+  await dbSet("products/"+id, null);
+  toast$(`🗑 "${p.name}" eliminado`);
+};
+
+// ══ ADD FORM ══
+function resetAddForm() {
+  npt="single"; npd="";
+  ["nn","np"].forEach(id => { const el=document.getElementById(id); if(el) el.value=""; });
+  document.getElementById("nb").checked=false;
+  document.getElementById("nfb").checked=false;
+  document.getElementById("nfsec").style.display="none";
+  document.getElementById("nfsed").innerHTML="";
+  document.getElementById("npi").value="";
+  document.getElementById("npi-prev").style.display="none";
+  document.getElementById("npi-rm").style.display="none";
+  document.getElementById("npi-icon").style.display="";
+  document.getElementById("npi-hint").style.display="";
+  document.getElementById("nsed").innerHTML="";
+  addSR("nsed"); setNPT("single");
+}
+window.setNPT = function(t) {
+  npt=t;
+  document.getElementById("nts").classList.toggle("on",t==="single");
+  document.getElementById("ntz").classList.toggle("on",t==="sizes");
+  document.getElementById("nsec-single").style.display = t==="single"?"":"none";
+  document.getElementById("nsec-sizes").style.display  = t==="sizes" ?"":"none";
+};
+window.onNewPhoto = function(inp) {
+  const file=inp.files[0]; if(!file) return;
+  resizeImg(file, data => {
+    npd=data;
+    const prev=document.getElementById("npi-prev");
+    const area=document.getElementById("npa");
+    prev.src=data; prev.style.display="block";
+    area.classList.remove("parea-empty"); area.classList.add("parea-preview");
+    document.getElementById("npi-icon").style.display="none";
+    document.getElementById("npi-hint").style.display="none";
+    document.getElementById("npi-rm").style.display="block";
+  });
+};
+window.clearNewPhoto = function() {
+  npd="";
+  const area=document.getElementById("npa");
+  document.getElementById("npi-prev").style.display="none";
+  document.getElementById("npi-rm").style.display="none";
+  document.getElementById("npi-icon").style.display="";
+  document.getElementById("npi-hint").style.display="";
+  document.getElementById("npi").value="";
+  area.classList.add("parea-empty"); area.classList.remove("parea-preview");
+};
+window.addProd = async function() {
+  const name=document.getElementById("nn").value.trim();
+  if(!name){toast$("⚠️ Escribe el nombre del postre");return;}
+  let sp=0,sz=[];
+  if(npt==="single"){
+    sp=parseFloat(document.getElementById("np").value);
+    if(isNaN(sp)||sp<0){toast$("⚠️ Precio inválido");return;}
+  } else {
+    sz=getSizes("nsed");
+    if(!sz){toast$("⚠️ Agrega al menos un tamaño con precio");return;}
+  }
+  const id=Date.now();
+  const flavors = document.getElementById("nfb").checked ? getFlavors("nfsed") : [];
+  const prod={id,name,isNew:document.getElementById("nb").checked,priceType:npt,photo:npd,singlePrice:sp,sizes:sz,flavors};
+  await dbSet("products/"+id, prod);
+  resetAddForm(); toast$(`🎉 "${prod.name}" agregado`); stab("c");
+};
+
+// ══ SETTINGS ══
+window.saveWa = async function() {
+  settings.whatsapp=document.getElementById("wai").value.trim();
+  await dbSet("settings", settings); toast$("📱 Número actualizado");
+};
+window.saveCreds = async function() {
+  const cur2=document.getElementById("sc").value;
+  const nu=document.getElementById("su").value.trim();
+  const np=document.getElementById("sp").value;
+  const nc=document.getElementById("spc").value;
+  const err=document.getElementById("cerr"),ok=document.getElementById("cok");
+  err.style.display="none"; ok.style.display="none";
+  if(cur2!==settings.pass){err.textContent="❌ Contraseña actual incorrecta";err.style.display="block";return;}
+  if(!nu){err.textContent="⚠️ Escribe el nuevo usuario";err.style.display="block";return;}
+  if(np.length<4){err.textContent="⚠️ Mínimo 4 caracteres";err.style.display="block";return;}
+  if(np!==nc){err.textContent="❌ Las contraseñas no coinciden";err.style.display="block";return;}
+  settings.user=nu; settings.pass=np;
+  await dbSet("settings", settings);
+  ["sc","su","sp","spc"].forEach(id=>document.getElementById(id).value="");
+  ok.style.display="block"; toast$("🔐 Credenciales guardadas");
+};
+
+// ══ TIENDA ABIERTA/CERRADA ══
+function updateStoreUI() {
+  const open = !!settings.isOpen;
+  // Toggle en admin config
+  const chk = document.getElementById("store-open-chk");
+  const badge = document.getElementById("store-badge");
+  if (chk) chk.checked = open;
+  if (badge) badge.innerHTML = open
+    ? `<span class="store-open-badge">🟢 Tienda ABIERTA — los clientes pueden pedir</span>`
+    : `<span class="store-closed-badge">🔴 Tienda CERRADA — pedidos bloqueados</span>`;
+}
+window.toggleStore = async function(open) {
+  settings.isOpen = open;
+  await dbSet("settings", settings);
+  toast$(open ? "🟢 Tienda abierta" : "🔴 Tienda cerrada");
+};
+
+// ══ SABORES — modal ══
+let _flvCtx = null; // {id, size, price}
+let _flvSel = "";
+
+window.flvOpen = function(id, size, flavor, price) {
+  const prod = products.find(p => p.id === id); if(!prod) return;
+  _flvCtx = {id, size, price};
+  _flvSel = flavor || "";
+  document.getElementById("flv-sub").textContent = prod.name + (size ? " · " + size : "");
+  const opts = document.getElementById("flv-opts");
+  opts.innerHTML = (prod.flavors||[]).map(f => {
+    const escaped = f.replace(/&/g,"&amp;").replace(/"/g,"&quot;");
+    return `<button class="flv-opt${_flvSel===f?" on":""}" data-flavor="${escaped}">${f}</button>`;
+  }).join("");
+  // Asignar eventos sin inline onclick para evitar problema con comillas/apóstrofes
+  opts.querySelectorAll(".flv-opt").forEach(btn => {
+    btn.addEventListener("click", function() { flvSelectBtn(this); });
+  });
+  document.getElementById("flv-modal").classList.remove("off");
+};
+window.flvSelectBtn = function(btn) {
+  _flvSel = btn.getAttribute("data-flavor");
+  document.querySelectorAll("#flv-opts .flv-opt").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+};
+window.flvSelect = window.flvSelectBtn; // compatibilidad
+window.flvConfirm = function() {
+  if (!_flvSel) { toast$("⚠️ Elige un sabor"); return; }
+  const ctx = _flvCtx;
+  const sabor = _flvSel; // guardar sabor ANTES de cerrar el modal
+  flvClose();
+  addToCart(ctx.id, ctx.size, ctx.price, sabor);
+};
+window.flvClose = function() {
+  document.getElementById("flv-modal").classList.add("off");
+  _flvCtx = null; _flvSel = "";
+};
+
+// ══ SABORES — admin helpers ══
+window.addFlavRow = function(edId) {
+  const ed = document.getElementById(edId);
+  const row = document.createElement("div"); row.className = "serow";
+  row.innerHTML = `<input placeholder="Ej. Nachos, Pizzerola…" style="flex:1"><button class="serm" onclick="this.parentElement.remove()">×</button>`;
+  ed.appendChild(row);
+};
+window.toggleFlavSec = function(edId, show) {
+  const sec = document.getElementById(edId.replace("sed","sec").replace(/\d+$/,m=>m));
+  // derive section id: nfsed→nfsec, efsed123→efsec123
+  const secId = edId.replace("fsed","fsec");
+  const secEl = document.getElementById(secId);
+  if (secEl) secEl.style.display = show ? "" : "none";
+  if (show && document.getElementById(edId) && !document.getElementById(edId).children.length) {
+    addFlavRow(edId);
+  }
+};
+function getFlavors(edId) {
+  const rows = [...document.querySelectorAll("#"+edId+" .serow")];
+  const out = [];
+  for (const r of rows) {
+    const v = r.querySelector("input").value.trim();
+    if (v) out.push(v);
+  }
+  return out;
+}
+
+// ══ UTILS ══
+window.toggleEye = function(id, btn) {
+  const inp = document.getElementById(id);
+  if (!inp) return;
+  const show = inp.type === "password";
+  inp.type = show ? "text" : "password";
+  btn.textContent = show ? "🙈" : "👁️";
+};
+window.addSR = function(edId,lbl="",pr=""){
+  const ed=document.getElementById(edId);
+  const row=document.createElement("div"); row.className="serow";
+  row.innerHTML=`<input placeholder="Tamaño (Chico…)" value="${lbl}" style="max-width:115px"><input type="number" placeholder="Precio $" value="${pr}" min="0" step=".5"><button class="serm" onclick="this.parentElement.remove()">×</button>`;
+  ed.appendChild(row);
+};
+function getSizes(edId){
+  const rows=[...document.querySelectorAll("#"+edId+" .serow")];
+  const out=[];
+  for(const r of rows){
+    const ins=r.querySelectorAll("input");
+    const lbl=ins[0].value.trim(),pr=parseFloat(ins[1].value);
+    if(!lbl||isNaN(pr)||pr<0) return null;
+    out.push({label:lbl,price:pr});
+  }
+  return out.length?out:null;
+}
+// ══ CROP EDITOR ══
+let _cropCb = null;      // callback after crop
+let _cropScale = 1;
+let _cropX = 0, _cropY = 0;
+let _cropDragging = false;
+let _cropLastX = 0, _cropLastY = 0;
+let _cropNatW = 0, _cropNatH = 0;
+const CROP_SIZE = 280;   // display size of the square
+
+function openCropModal(file, cb) {
+  _cropCb = cb;
+  _cropScale = 1;
+  _cropX = 0; _cropY = 0;
+  const url = URL.createObjectURL(file);
+  const img = document.getElementById("crop-img");
+  img.onload = () => {
+    _cropNatW = img.naturalWidth;
+    _cropNatH = img.naturalHeight;
+    // fit image so shortest side = CROP_SIZE
+    const fit = CROP_SIZE / Math.min(_cropNatW, _cropNatH);
+    _cropScale = fit;
+    document.getElementById("crop-zoom-range").min = fit;
+    document.getElementById("crop-zoom-range").max = fit * 4;
+    document.getElementById("crop-zoom-range").step = fit * 0.01;
+    document.getElementById("crop-zoom-range").value = fit;
+    _cropCenter();
+    _cropApply();
+    URL.revokeObjectURL(url);
+  };
+  img.src = url;
+  document.getElementById("crop-modal").classList.remove("off");
+  _cropBindEvents();
+}
+
+function _cropCenter() {
+  _cropX = (CROP_SIZE - _cropNatW * _cropScale) / 2;
+  _cropY = (CROP_SIZE - _cropNatH * _cropScale) / 2;
+}
+
+function _cropClamp() {
+  const w = _cropNatW * _cropScale;
+  const h = _cropNatH * _cropScale;
+  if (_cropX > 0) _cropX = 0;
+  if (_cropY > 0) _cropY = 0;
+  if (_cropX + w < CROP_SIZE) _cropX = CROP_SIZE - w;
+  if (_cropY + h < CROP_SIZE) _cropY = CROP_SIZE - h;
+}
+
+function _cropApply() {
+  const img = document.getElementById("crop-img");
+  img.style.width  = (_cropNatW * _cropScale) + "px";
+  img.style.height = (_cropNatH * _cropScale) + "px";
+  img.style.left   = _cropX + "px";
+  img.style.top    = _cropY + "px";
+}
+
+window.cropZoom = function(val) {
+  const cx = CROP_SIZE / 2 - _cropX;
+  const cy = CROP_SIZE / 2 - _cropY;
+  const oldScale = _cropScale;
+  _cropScale = parseFloat(val);
+  _cropX -= cx * (_cropScale / oldScale - 1);
+  _cropY -= cy * (_cropScale / oldScale - 1);
+  _cropClamp(); _cropApply();
+};
+
+function _cropBindEvents() {
+  const wrap = document.getElementById("crop-wrap");
+  // Touch
+  wrap.ontouchstart = e => {
+    if (e.touches.length === 1) {
+      _cropDragging = true;
+      _cropLastX = e.touches[0].clientX;
+      _cropLastY = e.touches[0].clientY;
+    }
+  };
+  wrap.ontouchmove = e => {
+    e.preventDefault();
+    if (!_cropDragging || e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - _cropLastX;
+    const dy = e.touches[0].clientY - _cropLastY;
+    _cropLastX = e.touches[0].clientX;
+    _cropLastY = e.touches[0].clientY;
+    _cropX += dx; _cropY += dy;
+    _cropClamp(); _cropApply();
+  };
+  wrap.ontouchend = () => { _cropDragging = false; };
+  // Mouse (desktop)
+  wrap.onmousedown = e => {
+    _cropDragging = true;
+    _cropLastX = e.clientX; _cropLastY = e.clientY;
+  };
+  wrap.onmousemove = e => {
+    if (!_cropDragging) return;
+    _cropX += e.clientX - _cropLastX;
+    _cropY += e.clientY - _cropLastY;
+    _cropLastX = e.clientX; _cropLastY = e.clientY;
+    _cropClamp(); _cropApply();
+  };
+  wrap.onmouseup = wrap.onmouseleave = () => { _cropDragging = false; };
+}
+
+window.cropConfirm = function() {
+  const img = document.getElementById("crop-img");
+  const OUT = 600;
+  const ratio = OUT / CROP_SIZE;
+  const sx = -_cropX / _cropScale;
+  const sy = -_cropY / _cropScale;
+  const sw = CROP_SIZE / _cropScale;
+  const sh = CROP_SIZE / _cropScale;
+  const c = document.createElement("canvas");
+  c.width = OUT; c.height = OUT;
+  c.getContext("2d").drawImage(img, sx, sy, sw, sh, 0, 0, OUT, OUT);
+  const data = c.toDataURL("image/jpeg", 0.82);
+  document.getElementById("crop-modal").classList.add("off");
+  if (_cropCb) _cropCb(data);
+  _cropCb = null;
+};
+
+window.cropCancel = function() {
+  document.getElementById("crop-modal").classList.add("off");
+  _cropCb = null;
+};
+
+function resizeImg(file, cb) {
+  openCropModal(file, cb);
+}
+let toastT;
+function toast$(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("on");
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove("on"),3000);
+}
+
+// ══ START ══
+init();
+</script>
+</body>
+</html>
